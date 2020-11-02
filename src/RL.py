@@ -128,7 +128,6 @@ class DQNAgent:
             self._learn_minibatch()
             
             if (i+1)%self.copy_online_to_target_ep==0:
-                pdb.set_trace()
                 self.model_2.set_weights(self.model_1.get_weights())
             
             if (i+1)%self.eval_after==0:

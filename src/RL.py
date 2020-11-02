@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[31]:
+# In[1]:
 
 
 import pandas as pd
@@ -30,7 +30,7 @@ random.seed(random_state)
 
 # # Agent
 
-# In[41]:
+# In[7]:
 
 
 class QLayer(_Merge):
@@ -128,7 +128,8 @@ class DQNAgent:
             self._learn_minibatch()
             
             if (i+1)%self.copy_online_to_target_ep==0:
-                self.model_2 = self.model_1
+                pdb.set_trace()
+                self.model_2.set_weights(self.model_1.get_weights())
             
             if (i+1)%self.eval_after==0:
                 r = self.run_env(env)
@@ -259,7 +260,7 @@ class DQNAgent:
 
 # # RUN
 
-# In[45]:
+# In[3]:
 
 
 # SOME FORMATTING ISSUES WITH CSV
@@ -286,7 +287,7 @@ print("Cartpole", "| Total transitions:", len(df), " | Total episodes:", len(df[
 org_df = df.copy()
 
 
-# In[50]:
+# In[8]:
 
 
 result_dir = '../results/'

@@ -13,7 +13,7 @@ import pdb
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from copy import deepcopy
-import time
+import datetime
 
 from keras.models import Sequential, Model
 import keras.layers as layers
@@ -261,6 +261,9 @@ class DQNAgent:
 
 # In[3]:
 
+total_time = 0
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 # SOME FORMATTING ISSUES WITH CSV
 df = pd.read_csv('../data/CartPole-v1_10k.csv')
@@ -307,6 +310,8 @@ for ep_size in [1000, 2000, 5000, 10000]:
         
         for dueling, double_param, priority_alpha in [(False, 0, 0), (False, 0, 0.05), (False, 0.5, 0.05), (True, 0.5, 0.05)]:
             for random_state in [0, 1, 2]:
+                start_time = datetime.datetime.now()
+
                 df = df_run.copy()
                 
                 prefix = env_name + '_' + 'ep_size_' + str(ep_size) + '_' + reward_type + '_' +                     'dueling_' + str(dueling) + '_double_' + str(double_param) + '_priority_' +                     str(priority_alpha) + '_' + 'rs_' + str(random_state) + '_'
@@ -331,6 +336,12 @@ for ep_size in [1000, 2000, 5000, 10000]:
                 result.to_csv(result_dir + prefix +'result.csv')
 
                 print('==run ends==')
+
+                run_time = datetime.datetime.now() - start_time
+                total_time += run_time.seconds
+                print(f'Run took {run_time.seconds} seconds')
+                print(f'Total time so far: {total_time} seconds')
+                print()
 
 
 # In[ ]:

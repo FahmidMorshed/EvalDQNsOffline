@@ -20,7 +20,7 @@ class GridWorld(gym.Env):
         self.reward_model = reward_model
 
         # 4 possible actions - Up, Down, Left, Right
-        self.action_space = spaces.Discrete(2)
+        self.action_space = spaces.Discrete(4)
 
         # The input variables that an agent can observe before making a choice -
         #   the agent only knows where they are

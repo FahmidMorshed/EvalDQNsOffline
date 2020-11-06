@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[5]:
 
 
 import pandas as pd
@@ -22,6 +22,7 @@ from keras import backend as K
 from keras.layers.merge import _Merge, Multiply
 import ast
 import gym
+import gym_gridworld
 
 random_state=0
 np.random.seed(random_state)
@@ -30,7 +31,7 @@ random.seed(random_state)
 
 # # Agent
 
-# In[7]:
+# In[6]:
 
 
 class QLayer(_Merge):
@@ -49,7 +50,6 @@ class DQNAgent:
                  dueling=False, double_param=0, priority_alpha=0,
                  copy_online_to_target_ep=100, eval_after=100):
         
-        # NOT FOR NOW. FUTURE WORK
         #adding priority as noise in batch
         df_batch.at[:, 'weight'] = 0.0
         for i, row in df_batch.iterrows():
@@ -77,7 +77,6 @@ class DQNAgent:
         
         # setting up the models
         if self.dueling:
-            # TODO
             self.model_1 = self._build_model_dueling()
             self.model_2 = self._build_model_dueling()
         else:
@@ -234,13 +233,16 @@ class DQNAgent:
         
         return self.batch
     
-    def run_env(self, env):
+    def run_env(self, env, cast_np=True):
         if env is None:
             return 0
         state = env.reset()
         total_reward = 0
         while True:
-            action = self.act(state)[0]
+            if cast_np:
+                action = self.act(np.array(state))[0]
+            else:
+                action = self.act(state)[0]
             next_state, reward, done, info = env.step(action)
             total_reward += reward
             state = next_state
@@ -257,9 +259,9 @@ class DQNAgent:
         return eval_df
 
 
-# # RUN
+# # Load Cartpole Data and solve issues
 
-# In[3]:
+# In[ ]:
 
 
 # SOME FORMATTING ISSUES WITH CSV
@@ -286,16 +288,70 @@ print("Cartpole", "| Total transitions:", len(df), " | Total episodes:", len(df[
 org_df = df.copy()
 
 
-# In[8]:
+# # Create Custom Env Data
 
+# In[3]:
+
+
+import gym
+import numpy as np
+import pandas as pd
+import gym_gridworld
+import random
+
+random_state = 0
+np.random.seed(random_state)
+random.seed(random_state)
+
+env = gym.make('gridworld-v0', deterministic=True)
+action_size = 2
+episodes = 10
+df = pd.DataFrame(columns=['episode_id', 'transition_id', 'state', 'action', 'immediate_reward', 
+                      'delayed_reward', 'done', 'next_state'])
+
+for ep in range(episodes):
+    state = env.reset()
+    done = False
+    delayed_reward = 0
+    transition_id = 0
+    while not done:
+#         env.render()
+        action = np.random.choice(range(action_size))
+        next_state, reward, done, info = env.step(action)
+        delayed_reward += reward
+
+        if done:
+            if ep%100==0:
+                print("Episode:", ep, "| Total Reward:", round(delayed_reward,2))
+            df = df.append({'episode_id':ep, 'transition_id':transition_id, 'state':np.array(state), 'action':action, 
+                   'immediate_reward': reward, 'delayed_reward':delayed_reward, 'done':done, 'next_state':np.array(next_state)}, 
+                  ignore_index=True)
+            break
+        
+        df = df.append({'episode_id':ep, 'transition_id':transition_id, 'state':np.array(state), 'action':action, 
+                   'immediate_reward': reward, 'delayed_reward':0, 'done':done, 'next_state':np.array(next_state)}, 
+                  ignore_index=True)
+        transition_id += 1
+        state = next_state
+
+df.to_pickle('../data/gridworld_dm_10k.pkl')
+df
+
+
+# # run
+
+# In[7]:
+
+
+org_df = pd.read_pickle('../data/gridworld_dm_10k.pkl')
 
 result_dir = '../results/'
-env = gym.make("CartPole-v1")
+env = gym.make('gridworld-v0', deterministic=True)
 epoch = 300
 action_size = 2
-env_name = 'cartpole'
+env_name = 'gridworld'
 prefix = ''
-for ep_size in [1000, 2000, 5000, 10000]:
+for ep_size in [10, 5000, 10000]:
     df_run = org_df.copy()
     if ep_size < len(df_run['episode_id'].unique()):
         eps = np.random.choice(df_run['episode_id'].unique(), ep_size)
@@ -306,31 +362,31 @@ for ep_size in [1000, 2000, 5000, 10000]:
         df_run['reward'] = df_run[reward_type]
         
         for dueling, double_param, priority_alpha in [(False, 0, 0), (False, 0, 0.05), (False, 0.5, 0.05), (True, 0.5, 0.05)]:
-            for random_state in [0, 1, 2]:
-                df = df_run.copy()
-                
-                prefix = env_name + '_' + 'ep_size_' + str(ep_size) + '_' + reward_type + '_' +                     'dueling_' + str(dueling) + '_double_' + str(double_param) + '_priority_' +                     str(priority_alpha) + '_' + 'rs_' + str(random_state) + '_'
-            
-        
-                np.random.seed(random_state)
-                random.seed(random_state)
-            
-                print("==" + prefix + "==")
-                agent = DQNAgent(df_batch=df, state_size=len(df.iloc[0]['state']), action_size=action_size, 
-                                 dueling=dueling, double_param=double_param, priority_alpha=priority_alpha,
-                                 copy_online_to_target_ep=100, eval_after=100)
+            random_state=0
+            df = df_run.copy()
 
-                agent.learn(epoch, env)
+            prefix = env_name + '_' + 'ep_size_' + str(ep_size) + '_' + reward_type + '_' +                 'dueling_' + str(dueling) + '_double_' + str(double_param) + '_priority_' +                 str(priority_alpha) + '_' + 'rs_' + str(random_state) + '_'
 
 
-                result = agent.batch
-                eval_df = agent.get_all_eval_df()
-                eval_df.to_pickle(result_dir + prefix +'eval.pkl')
-                result.to_pickle(result_dir + prefix +'result.pkl')
-                eval_df.to_csv(result_dir + prefix +'eval.csv')
-                result.to_csv(result_dir + prefix +'result.csv')
+            np.random.seed(random_state)
+            random.seed(random_state)
 
-                print('==run ends==')
+            print("==" + prefix + "==")
+            agent = DQNAgent(df_batch=df, state_size=len(df.iloc[0]['state']), action_size=action_size, 
+                             dueling=dueling, double_param=double_param, priority_alpha=priority_alpha,
+                             copy_online_to_target_ep=100, eval_after=100)
+
+            agent.learn(epoch, env)
+
+
+            result = agent.batch
+            eval_df = agent.get_all_eval_df()
+            eval_df.to_pickle(result_dir + prefix +'eval.pkl')
+            result.to_pickle(result_dir + prefix +'result.pkl')
+            eval_df.to_csv(result_dir + prefix +'eval.csv')
+            result.to_csv(result_dir + prefix +'result.csv')
+
+            print('==run ends==')
 
 
 # In[ ]:

@@ -262,6 +262,8 @@ class DQNAgent:
 # In[3]:
 
 total_time = 0
+
+# Selecting a GPU for tensorflow
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
@@ -294,11 +296,12 @@ org_df = df.copy()
 
 result_dir = '../results/'
 env = gym.make("CartPole-v1")
-epoch = 300
+epoch = 10000
 action_size = 2
+random_state = 0
 env_name = 'cartpole'
 prefix = ''
-for ep_size in [1000, 2000, 5000, 10000]:
+for ep_size in [1000, 5000, 10000]:
     df_run = org_df.copy()
     if ep_size < len(df_run['episode_id'].unique()):
         eps = np.random.choice(df_run['episode_id'].unique(), ep_size)
@@ -309,39 +312,38 @@ for ep_size in [1000, 2000, 5000, 10000]:
         df_run['reward'] = df_run[reward_type]
         
         for dueling, double_param, priority_alpha in [(False, 0, 0), (False, 0, 0.05), (False, 0.5, 0.05), (True, 0.5, 0.05)]:
-            for random_state in [0, 1, 2]:
-                start_time = datetime.datetime.now()
+            start_time = datetime.datetime.now()
 
-                df = df_run.copy()
-                
-                prefix = env_name + '_' + 'ep_size_' + str(ep_size) + '_' + reward_type + '_' +                     'dueling_' + str(dueling) + '_double_' + str(double_param) + '_priority_' +                     str(priority_alpha) + '_' + 'rs_' + str(random_state) + '_'
-            
-        
-                np.random.seed(random_state)
-                random.seed(random_state)
-            
-                print("==" + prefix + "==")
-                agent = DQNAgent(df_batch=df, state_size=len(df.iloc[0]['state']), action_size=action_size, 
-                                 dueling=dueling, double_param=double_param, priority_alpha=priority_alpha,
-                                 copy_online_to_target_ep=100, eval_after=100)
+            df = df_run.copy()
 
-                agent.learn(epoch, env)
+            prefix = env_name + '_' + 'ep_size_' + str(ep_size) + '_' + reward_type + '_' +                     'dueling_' + str(dueling) + '_double_' + str(double_param) + '_priority_' +                     str(priority_alpha) + '_' + 'rs_' + str(random_state) + '_'
 
 
-                result = agent.batch
-                eval_df = agent.get_all_eval_df()
-                eval_df.to_pickle(result_dir + prefix +'eval.pkl')
-                result.to_pickle(result_dir + prefix +'result.pkl')
-                eval_df.to_csv(result_dir + prefix +'eval.csv')
-                result.to_csv(result_dir + prefix +'result.csv')
+            np.random.seed(random_state)
+            random.seed(random_state)
 
-                print('==run ends==')
+            print("==" + prefix + "==")
+            agent = DQNAgent(df_batch=df, state_size=len(df.iloc[0]['state']), action_size=action_size,
+                             dueling=dueling, double_param=double_param, priority_alpha=priority_alpha,
+                             copy_online_to_target_ep=100, eval_after=100)
 
-                run_time = datetime.datetime.now() - start_time
-                total_time += run_time.seconds
-                print(f'Run took {run_time.seconds} seconds')
-                print(f'Total time so far: {total_time} seconds')
-                print()
+            agent.learn(epoch, env)
+
+
+            result = agent.batch
+            eval_df = agent.get_all_eval_df()
+            eval_df.to_pickle(result_dir + prefix +'eval.pkl')
+            result.to_pickle(result_dir + prefix +'result.pkl')
+            eval_df.to_csv(result_dir + prefix +'eval.csv')
+            result.to_csv(result_dir + prefix +'result.csv')
+
+            print('==run ends==')
+
+            run_time = datetime.datetime.now() - start_time
+            total_time += run_time.seconds
+            print(f'Run took {run_time.seconds} seconds')
+            print(f'Total time so far: {total_time} seconds')
+            print()
 
 
 # In[ ]:

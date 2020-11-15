@@ -57,7 +57,8 @@ class GridWorld(gym.Env):
     def step(self, action):
         self.step_count += 1
         if self.deterministic is False:
-            action = np.random.choice([0,1])
+            if np.random.uniform() < 0.3:
+                action = np.random.choice([0,1])
 
         if action == 0:
             self.current_state = (self.current_state[0], self.current_state[1] + 1)

@@ -19,6 +19,6 @@ To do our comparative study, we have used 3 environments. Two of the environment
 - Gridworld (deterministic)
 - Gridworld (non-deterministic)
 
-![Gridworld](/images/gridworld.png=250x250)
+<img src="/images/gridworld.png" width="48">
 
 

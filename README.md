@@ -31,12 +31,12 @@ A typical dataset looks like as follows:
 ### Result
 <div class="row">
   <div class="column">
-    <img src="/images/dataset.png" alt="Snow" style="width:100%">
+    <img src="/images/dataset.png" alt="Snow" style="width:33.33%">
   </div>
   <div class="column">
-    <img src="/images/dataset.png" alt="Forest" style="width:100%">
+    <img src="/images/dataset.png" alt="Forest" style="width:33.33%">
   </div>
   <div class="column">
-    <img src="/images/dataset.png" alt="Mountains" style="width:100%">
+    <img src="/images/dataset.png" alt="Mountains" style="width:33.33%">
   </div>
 </div>

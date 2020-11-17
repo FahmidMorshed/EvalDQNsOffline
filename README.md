@@ -29,4 +29,8 @@ A typical dataset looks like as follows:
 <img src="/images/dataset.png" width="600">
 
 ### Result
-![](/images/dataset.png)  |  ![](/images/dataset.png)
+<p float="left">
+  <img src="/images/dataset.png" width="100" />
+  <img src="/images/dataset.png" width="100" /> 
+  <img src="/images/dataset.png" width="100" />
+</p>

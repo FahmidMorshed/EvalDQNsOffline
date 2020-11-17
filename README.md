@@ -28,7 +28,7 @@ The directories and their uses are as follows:
   - the generate_data.ipynb was used to generate custom gridworld data (both deterministic and non-deterministic)
   - the RL.ipynb was used for the DQN implementations and generating results
   
-*Note: the .ipynb are jupyter files and can be run using jupyter notebook or MS visual code or something similar*
+*Note: the .ipynb are jupyter files and can be run using jupyter notebook or MS visual code or something similar. Also, one can open this in github directly.*
 
 
 ### Abstract

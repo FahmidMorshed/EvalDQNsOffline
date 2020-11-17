@@ -134,7 +134,16 @@ H2_grd_ndm %>%
   geom_line(aes(group = DQN)) +
   geom_point() +
   facet_wrap(~Reward)+
-  labs(x="Episode Size", y = "Avg of R")
+  labs(x="Episode Size", y = "Average reward") + 
+  ggtitle("Non-deterministic Gridworld")+ 
+  theme(
+    plot.title = element_text(face="bold", hjust = 0.5),
+    axis.title.x = element_text(face="bold"),
+    axis.title.y = element_text(face="bold"),
+    strip.text = element_text(face="bold"),
+    panel.background = element_rect(fill = 'white', colour = 'grey'),
+    text = element_text(size = 20)
+  ) 
 
 
 H2_cartpole <- read_excel("Desktop/CSC 722/Project/EvalDQNsOffline/Graphs/H2.xlsx", 
@@ -148,5 +157,14 @@ H2_cartpole %>%
   geom_line(aes(group = DQN)) +
   geom_point() +
   facet_wrap(~Reward)+
-  labs(x="Episode Size", y = "Avg of R")
+  labs(x="Episode Size", y = "Average reward") + 
+  ggtitle("Cartpole")+ 
+  theme(
+    plot.title = element_text(face="bold", hjust = 0.5),
+    axis.title.x = element_text(face="bold"),
+    axis.title.y = element_text(face="bold"),
+    strip.text = element_text(face="bold"),
+    panel.background = element_rect(fill = 'white', colour = 'grey'),
+    text = element_text(size = 20)
+  ) 
 

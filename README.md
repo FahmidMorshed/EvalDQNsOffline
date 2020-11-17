@@ -30,7 +30,7 @@ A typical dataset looks like as follows:
 
 ### Result
 <p float="center">
-  <img src="/Graphs/Hypothesis 1 cartpole F.png" width="240" />
-  <img src="/Graphs/Hypothesis 1 grd dm F.png" width="240" /> 
-  <img src="/Graphs/Hypothesis 1 grd ndm F.png" width="240" />
+  <img src="/Graphs/Hypothesis 1 cartpole F.png" width="300" />
+  <img src="/Graphs/Hypothesis 1 grd dm F.png" width="300" /> 
+  <img src="/Graphs/Hypothesis 1 grd ndm F.png" width="300" />
 </p>

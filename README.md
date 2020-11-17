@@ -28,3 +28,15 @@ A typical dataset looks like as follows:
 
 <img src="/images/dataset.png" width="600">
 
+### Result
+<div class="row">
+  <div class="column">
+    <img src="/images/dataset.png" alt="Snow" style="width:100%">
+  </div>
+  <div class="column">
+    <img src="/images/dataset.png" alt="Forest" style="width:100%">
+  </div>
+  <div class="column">
+    <img src="/images/dataset.png" alt="Mountains" style="width:100%">
+  </div>
+</div>

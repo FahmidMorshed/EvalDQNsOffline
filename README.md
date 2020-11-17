@@ -1,4 +1,4 @@
-# PROJECT NAME: Evaluating robustness of DQN variants for offline/batch learning
+# PROJECT: Evaluating robustness of DQN variants for offline/batch learning
 
 This repository contains project work of CSC 722 Advance Machine Learning from Fall 2020 course at NC State University, taught by D. Bahler. 
 
@@ -12,6 +12,12 @@ evaluate the robustness of different existing DQN algorithms in a batch learning
 context when there are immediate rewards available in the environments but are substantially worse in the case of delayed rewards. We also found that increasing 
 data size only helps when the environment is large and complex enough to learn. Our results suggest that Vanilla DQN performs better than other more complex 
 DQN variants in terms of convergence time and reward collection in presence of immediate reward.
+
+### Method
+To do our comparative study, we have used 3 environments. Two of the environments are custom made, while one is off-the-self from gym environment. The environments are as follows: 
+- Cartpole-v1
+- Gridworld (deterministic)
+- Gridworld (non-deterministic)
 
 
 

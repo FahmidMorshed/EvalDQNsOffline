@@ -58,11 +58,14 @@ A typical dataset looks like as follows:
 <img src="/images/dataset.png" width="600">
 
 ### Result
+
+- DQNs are somewhat useful when immediate rewards are used, but almost useless when the rewards are delayed
+- Among different variants of DQNs, vanilla DQN has higher performace than others when used in offline learning
+- Increasing episodes (data size) doesn't effect the learning much
+
 <p float="center">
   <img src="/Graphs/Hypothesis 1 cartpole F.png" width="320" />
   <img src="/Graphs/Hypothesis 1 grd dm F.png" width="320" /> 
   <img src="/Graphs/Hypothesis 1 grd ndm F.png" width="320" />
 </p>
-- DQNs are somewhat useful when immediate rewards are used, but almost useless when the rewards are delayed
-- Among different variants of DQNs, vanilla DQN has higher performace than others when used in offline learning
-- Increasing episodes (data size) doesn't effect the learning much
+

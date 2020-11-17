@@ -29,8 +29,8 @@ A typical dataset looks like as follows:
 <img src="/images/dataset.png" width="600">
 
 ### Result
-<p float="left">
-  <img src="/images/dataset.png" width="100" />
-  <img src="/images/dataset.png" width="100" /> 
-  <img src="/images/dataset.png" width="100" />
+<p float="center">
+  <img src="/Graphs/Hypothesis 1 cartpole F.png" width="360" />
+  <img src="/Graphs/Hypothesis 1 grd dm F.png" width="360" /> 
+  <img src="/Graphs/Hypothesis 1 grd ndm F.png" width="360" />
 </p>

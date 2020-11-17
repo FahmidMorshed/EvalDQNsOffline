@@ -1,6 +1,35 @@
 # PROJECT: Evaluating robustness of DQN variants for offline/batch learning
 
-This repository contains project work of CSC 722 Advance Machine Learning from Fall 2020 course at NC State University, taught by D. Bahler. 
+This repository contains Deep Reinforcement Learning project for CSC 722 Advance Machine Learning from Fall 2020 course at NC State University, taught by D. Bahler. 
+
+### FILES and Directories:
+The directories and their uses are as follows:
+1. /data
+  - contains generated 10k episodes for each environments
+  - files are in pickle format (binary)
+  - these files can be generated using the script /src/generate_data.ipynb
+  
+2. /results
+  - contains all the results for each of the runs
+  - for each environments, there are 24 different runs, all with different parameters. the filenames are the parameter choices
+  - this can be generated using the script /src/RL.ipynb
+
+3. /Graphs
+  - contains two xlsx files for generating graphs
+  - images for our resutls are also here
+  - R Script.R is the script that was used to generate resulted graphs
+
+4. /Images
+  - for github readme file
+
+5. /src
+  - the /src/gym_gridworld folder is our custom gym environment. one can install the environment by doing *pip install -e .* inside the folder
+  - the cartpole.py script was used to generate cartpole data
+  - the generate_data.ipynb was used to generate custom gridworld data (both deterministic and non-deterministic)
+  - the RL.ipynb was used for the DQN implementations and generating results
+  
+*Note: the .ipynb are jupyter files and can be run using jupyter notebook or MS visual code or something similar
+
 
 ### Abstract
 Deep Q-Networks (DQN) are the modern standard for deep reinforcement learning. Recently, many popular variations in DQN algorithms have emerged, 

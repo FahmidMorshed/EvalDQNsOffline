@@ -13,7 +13,7 @@ context when there are immediate rewards available in the environments but are s
 data size only helps when the environment is large and complex enough to learn. Our results suggest that Vanilla DQN performs better than other more complex 
 DQN variants in terms of convergence time and reward collection in presence of immediate reward.
 
-### Method
+### Environments
 To do our comparative study, we have used 3 environments. Two of the environments are custom made, while one is off-the-self from gym environment. The environments are as follows: 
 - Cartpole-v1
 - Gridworld (deterministic)
@@ -21,4 +21,10 @@ To do our comparative study, we have used 3 environments. Two of the environment
 
 <img src="/images/gridworld.png" width="600">
 
+
+### Data
+For batch learning, we collected 10k, 5k and 1k randomly played episodes from each environments. We trained DQNs based on the collected data.
+A typical dataset looks like as follows:
+
+<img src="/images/dataset.png" width="600">
 
